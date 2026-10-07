@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        {% load static %}
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>online Study</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<style>
+.button-group .cart-btn,
+.button-group .buy-btn,
+.button-group .wish-btn {
+    background-color: #c2185b !important;;
+    color: white !important;
+    border: 2px solid hotpink !important;
+    padding: 12px 20px !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.button-group .cart-btn:hover,
+.button-group .buy-btn:hover,
+.button-group .wish-btn:hover {
+        background-color: #f06292 !important;  /* Light Pink */
+
+    transform: scale(1.05) !important;
+    box-shadow: 0 5px 15px rgba(216, 27, 96, 0.4) !important;
+}
+</style>
+</head>
+<body>
+      <div class="container-fluid">
+        <!-- header start -->
+        <div class="row ">
+            <div class="col-sm-12">
+
+                <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+                        <img src="{% static 'images/logo-removebg-preview.png' %}" alt="logo" class="logo">
+
+
+
+
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav m-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+        </li>
+        <!-- <li class="nav-item">
+            <a class="nav-link" href="#">about</a>
+        </li> -->
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="services.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Services
+            </a>
+            <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'free&premiumbook' %}">Free & Premium Books</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'free' %}">Free Books</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'bookcategories' %}">Book Categories</a></li>
+
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'about' %}">about Us</a>
+        </li>
+
+                <li class="nav-item">
+            <a class="nav-link" href="{% url 'Books' %}">Books</a>
+        </li>
+
+
+
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+        </li>
+        </ul>
+                <i class="fa-solid fa-moon" id="btn" onclick="toggleMode()" style="color:#ffffff !important"></i>
+
+        <form class="d-flex" role="search">
+                <button type="button" class="btn btn-signup" data-bs-toggle="modal" data-bs-target="#signupModal">
+    Sign Up
+</button>&emsp;
+
+<button type="button" class="btn btn-login" data-bs-toggle="modal" data-bs-target="#loginModal">
+    Login
+</button>
+
+        </form>
+    </div>
+    </div>
+</nav>
+
+
+<!-- ==================== Book Details ==================== -->
+
+<section class="book-details py-5">
+
+<div class="container">
+
+<div class="row g-5">
+
+<!-- Left -->
+
+<div class="col-lg-5">
+
+<div class="book-image-card">
+
+<img src="{{book.image.url}}"
+class="img-fluid main-book">
+
+
+</div>
+
+</div>
+
+<!-- Right -->
+
+<div class="col-lg-7">
+    <span class="category-badge">
+    {% for cat in book.categories.all %}
+        {{ cat.name }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+</span>
+
+<h1 class="book-title">
+{{book.title}}
+</h1>
+
+<h5 class="author">
+{{book.author}}
+</h5>
+
+<div class="rating">
+
+<i class="fa-solid fa-star"></i>
+<i class="fa-solid fa-star"></i>
+<i class="fa-solid fa-star"></i>
+<i class="fa-solid fa-star"></i>
+<i class="fa-solid fa-star-half-stroke"></i>
+
+<span>{{book.rating}} ({{book.reviews}} Reviews)</span>
+
+</div>
+
+<div class="price-box">
+
+<h2>
+
+₹{{book.price}}
+
+<del>₹{{book.old_price}}</del>
+
+<span class="discount">
+{{book.discount}}% OFF
+</span>
+
+</h2>
+
+</div>
+
+<p class="description">
+<p class="description">
+{{book.description}}
+</p>
+</p>
+
+<!-- Features -->
+
+<div class="row mt-4">
+
+<div class="col-md-3">
+
+<div class="feature">
+
+<i class="fa-solid fa-language"></i>
+
+<h6>Language</h6>
+
+<p>English</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="feature">
+
+<i class="fa-solid fa-book"></i>
+
+<h6>Pages</h6>
+
+<p>544</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="feature">
+
+<i class="fa-solid fa-building"></i>
+
+<h6>Publisher</h6>
+
+<p>No Starch</p>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="feature">
+
+<i class="fa-solid fa-calendar"></i>
+
+<h6>Published</h6>
+
+<p> {{ book.published_year }}</p>
+
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Buttons -->
+
+<div class="button-group mt-4">
+
+<button class="cart-btn">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+Add To Cart
+
+</button>
+
+<button type="button" class="buy-btn" data-bs-toggle="modal" data-bs-target="#loginModal" data-book-id="{{book.id}}" onclick="setBuyNowBook(this)">
+
+
+
+    Buy Now
+</button>
+<button class="wish-btn">
+
+<i class="fa-regular fa-heart"></i>
+
+Wishlist
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ==================== About Book ==================== -->
+
+<section class="about-book py-5">
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-lg-8">
+
+<h3>About this Book</h3>
+
+<p>
+
+
+{{book.description}}
+</p>
+
+<h4>You Will Learn</h4>
+
+
+<p>{{ book.importance }}</p>
+
+</div>
+
+<div class="col-lg-4">
+
+<div class="quote-box">
+
+<i class="fa-solid fa-quote-left"></i>
+
+<p>
+
+"The best way to learning."
+
+</p>
+
+<h5>Eric Matthes</h5>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ==================== Related Books ==================== -->
+
+</div>
+
+</div>
+
+</section>
+          <!-- ==================== Related Books ==================== -->
+
+<section class="featured-categories">
+
+    <div class="container">
+
+        <h2 class="mb-4">
+            You May Also Like
+        </h2>
+
+        <div class="row g-4">
+
+            {% for related in related_books %}
+
+            <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+
+                <div class="card h-100">
+
+                    {% if related.discount %}
+                    <span class="offer">
+                        {{ related.discount }}% OFF
+                    </span>
+                    {% endif %}
+
+                    <img src="{{ related.image.url }}"
+                         class="card-img-top img-fluid"
+                         alt="{{ related.title }}">
+
+                    <div class="wishlist">
+                        <i class="bi bi-heart"></i>
+                    </div>
+
+                    <div class="card-body">
+
+                        <h5 class="card-title text-center gallery-tittle">
+                            {{ related.title }}
+                        </h5>
+
+                        <p class="text-muted">
+                            <i class="bi bi-person-fill"></i>
+                            {{ related.author }}
+                        </p>
+
+                        <div class="price">
+
+                            <span class="new-price">
+                                ₹{{ related.price }}
+                            </span>
+
+                            <span class="old-price">
+                                ₹{{ related.old_price }}
+                            </span>
+
+                            <span class="discount">
+                                {{ related.discount }}% OFF
+                            </span>
+
+                        </div>
+
+                        <p class="rating">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            {{ related.rating }}
+                            ({{ related.reviews }} Reviews)
+                        </p>
+
+                        <a href="{% url 'bookdetail' related.id %}"
+                           class="btn btn-info text-white">
+                            View Details
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <p>No related books available.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Bootstrap -->
+
+                <!--newsletter-->
+                <section class="newsletter py-5">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <!--left image-->
+                            <div class="col-md-6 text-center">
+                                <img src="{% static 'images/bbbb-removebg-preview.png' %}" class="img-fluid">
+                            </div>
+                            <!--right text-->
+
+
+
+                        <div class="col-md-6">
+                    <div class= "newsletter-box text-center">
+                 <h3 class="category-heading">Subscribe Our Newsletter </h3>
+        <p class="category-text">Subscribe to our newsletter and stay connected with the world of learning. Get instant updates about newly added eBooks, study materials, exam preparation guides, educational blogs, and exclusive offers delivered directly to your inbox. Whether you're a student, a competitive exam aspirant, or a passionate reader, our newsletter helps you discover valuable learning resources and never miss the latest educational updates.</p>
+
+                  <div class=" mt-4">
+                      {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+                      <form action="{% url 'newsletter' %}" method="POST">
+    {% csrf_token %}
+    <input type="email" class="form-control" placeholder="Enter your email" name="email">
+    <br>
+    <button class="btn subscribe-btn" type="submit">Subscribe</button>
+                      </form>
+</div>
+                  <small class="d-block mt-3">
+                    We respect your privacy. No spam,ever.
+                  </small>
+                    </div>
+                        </div>
+
+    </div>
+                    </div>
+                </section>
+
+                                              <!--footer start-->
+                 <div class="row">
+                    <div class="row footer">
+                    <div class="col-sm-3">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="quick-lines">
+                        <li>Home</li>
+                        <li>Categories</li>
+                        <li>Popular Books</li>
+                        <li>About Us</li>
+                        <li>Contact Us</li>
+                        
+                    </ul>
+                    </div>
+                    <div class="col-sm-3">
+                     <h3 class="footer-heading">Explore Books</h3>
+                                        <ul class="quick-lines">
+                        <li>Programming Books</li>
+                        <li>UPSC Books</li>
+                        <li>Engineering Books</li>
+                        <li>Novels</li>
+                        <li>Free E-Books</li>
+                                        </ul>
+                
+
+    
+
+                     
+                    </div>
+                    <div class="col-sm-3">
+                     <h3 class="footer-heading">Contact Us</h3>
+    
+
+       <p>
+           <i class="fa-solid fa-phone"></i>
+            +91 9876543210
+            </p>
+
+           <p>
+          <i class="fa-solid fa-envelope"></i>
+            support@onlinestudy.com
+            </p>
+
+           <p>
+           <i class="fa-solid fa-location-dot"></i>
+        India
+          </p>
+                    </div>
+                    <div class="col-sm-3">
+                    
+        
+
+                    <h3 class="footer-heading">Resources</h3>
+
+    <ul class="quick-lines">
+        <li>Free E-Books</li>
+        <li>Study Materials</li>
+        <li>Newsletter</li>
+        <li>Contact Support</li>
+    </ul>
+
+                    </div>
+                    <!-- Social Icons Start -->
+<div class="social-icons">
+
+    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+
+</div>
+<!-- Social Icons End -->
+</div>
+ <div class="copyright">
+        © 2026 Online Study|All Rights Reserived| Disigned & Developed by <a href="Docpragatiprofile.pdf" target="_blank"><span>Pragati Singh💗</span></a>
+
+
+                 </div>
+                 </div>
+                <!--footer end-->
+      </div>
+
+                                 <!-- Button trigger modal -->
+<button type="button" class="btn btn-success enquiry-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Enquiry Now
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Enquiry Form</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="enquiry-form" action="{% url 'enquirycode' %}" method="POST">
+    {% csrf_token %}
+            <input type="text" placeholder="enter your name" name="name">
+            <input type="number" placeholder="enter your Phone number" name="phone">
+                        <input type="text" placeholder="enter book name" name="book_name">
+
+            <select name="category">
+                <option value="OPD">Category</option>
+                                <option value="Radiology">Novels</option>
+                <option value="Blood bank">Programming</option>
+            </select>
+            <textarea placeholder="Enquiry" name="enquiry"></textarea>
+            <button>Send</button>
+
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+        </div>
+        <button id="topBtn" onclick="topFunction()">
+    <i class="fa-solid fa-arrow-up"></i>
+</button>
+<!-- Signup Modal -->
+      <!-- Signup Modal -->
+<div class="modal fade" id="signupModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Create Account</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form class="signup-form" action="../booksignupcode/" method="post">
+            {% csrf_token %}
+          <input type="text" class="form-control mb-3" placeholder="Full Name" name="name">
+          <input type="email" class="form-control mb-3" placeholder="Email" name="email">
+
+          <input type="password" class="form-control mb-3" placeholder="Password" name="password">
+
+          <input type="password" class="form-control mb-3" placeholder="Confirm Password" name="confirm password">
+
+          <button class="btn btn-danger w-100">
+            Sign Up
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Login</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+
+      <div class="modal-body">
+
+        <form action="{% url 'logincode' %}" method="post">
+{% csrf_token %}
+          <input type="email"
+          class="form-control mb-3"
+          placeholder="Email" name="email">
+
+          <input type="password"
+          class="form-control mb-3"
+          placeholder="Password" name="password">
+<input type="hidden" name="next" id="loginNext" value="">
+
+          <button class="btn btn-danger w-100">
+             Login
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    
+        <!-- Bootstrap JS link -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        //syntax:- element.classlist
+        //let mydiv=document.getElementById('a')
+        //mydiv.classlist.add('outer')
+                //mydiv.classlist.remove('outer')
+        //mydiv.classlist.toggle('outer')
+        //let c=mydiv.classList.contains('outer')
+        //console.log(c);
+        function toggleMode(){
+            document.body.classList.toggle('dark')
+            let btn=document.getElementById('btn')
+
+            if(document.body.classList.contains('dark')){
+                btn.classList.remove("fa-moon");
+                 btn.classList.add("fa-sun");
+
+            }else{
+                 btn.classList.remove("fa-sun");
+                btn.classList.add("fa-moon");
+
+
+                
+            }
+            }
+    </script>
+    <script>
+    let topBtn = document.getElementById("topBtn");
+
+window.onscroll = function () {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        topBtn.style.display = "block";
+    } else {
+        topBtn.style.display = "none";
+    }
+};
+
+function topFunction() {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+</script>
+<script>
+function setBuyNowBook(button){
+    var bookId=button.getAttribute("data-book-id");
+    document.getElementById("loginNext").value="/checkout/"+bookId+ "/";
+    }
+
+</script>
+
+</body>
+</html>
